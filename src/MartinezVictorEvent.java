@@ -32,5 +32,9 @@ public class MartinezVictorEvent {
                 ", task=" + task +
                 '}';
     }
+
+    public String getTitle() {
+        return title;
+    }
 }
 

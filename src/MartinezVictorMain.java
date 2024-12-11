@@ -49,19 +49,12 @@ public class MartinezVictorMain {
                     [5] Salir""");
             switch (intFromConsole(1,5)){
                 case 1: //Añadir evento
-                    System.out.println("Título del evento:");
-                    String title = stringFromConsole();
-                    System.out.println("Fecha (DD/MM/YYYY):");
-                    LocalDate date= esFechaValida();
-                    System.out.println("Prioridad:");
-                    Priority priority = Priority.MEDIUM; // TODO implementar prioridades
-                    events.add(new MartinezVictorEvent(title, date, priority));
-                    System.out.println("Añadido evento" +events.getLast()); //events.size()-1
+                    addEvent();
                     break;
                 case 2: //Borrar evento
-
+                    deleteEvent();
                     break;
-                case 3: //Listar eventos
+                case 3: //Listar evento
 
                     break;
                 case 4: //Marcar desmarcar tareas
@@ -78,6 +71,30 @@ public class MartinezVictorMain {
         } while(!exit);
     }
 
+    private void addEvent(){
+        System.out.println("Título del evento:");
+        String title = stringFromConsole();
+        System.out.println("Fecha (DD/MM/YYYY):");
+        LocalDate date= esFechaValida();
+        System.out.println("Prioridad:");
+        Priority priority = Priority.MEDIUM; // TODO implementar prioridades
+        //TODO introducir tareas (o no)
+        events.add(new MartinezVictorEvent(title, date, priority));
+        System.out.println("Añadido evento: " +events.getLast().getTitle()); //events.size()-1
+    }
+
+    private void deleteEvent(){
+        int i = 0;
+        for (MartinezVictorEvent event : events){
+            if (event.getTitle() == stringFromConsole()){
+                System.out.println("Eliminado evento: " +events.get(i).getTitle()); //events.size()-1
+                events.remove(i);
+                return;
+            }
+            ++i;
+        }
+        System.out.println(ANSI_RED+"Error. Introduce título exacto de un evento."+ANSI_RESET);
+    }
 
     /**
      * Verifica el input del usuario, para verificar que és una integer
