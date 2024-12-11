@@ -1,10 +1,18 @@
 public class MartinezVictorEventTask {
-    /*
-    Atributos
-         text (String): descripción de la tarea
-         isCompleted (boolean): estado de la tarea (true: hecha, false: sin hacer)
-    Métodos
-         Método para marcar la tarea como completada
-         Método toString para mostrar los detalles de la tarea.
-     */
+    private String text; //Descrpción de la tarea
+    private boolean isCompleted; //Estado de la tarea (true: hecha, false: sin hacer)
+
+    //Método para marcar la tarea como completada
+    public void setCompleted(boolean set){
+        isCompleted=set;
+    }
+
+    //Método toString para mostrar los detalles de la tarea.
+    @Override
+    public String toString() {
+        return "MartinezVictorEventTask{" +
+                "text='" + text + '\'' +
+                ", isCompleted=" + isCompleted +
+                '}';
+    }
 }
