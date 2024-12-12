@@ -3,7 +3,7 @@ public class MartinezVictorEventTask {
     final String ANSI_RED = "\u001B[31m";
     final String ANSI_RESET = "\u001B[0m";
 
-    private String text; //Descrpción de la tarea
+    private String text; //Descripción de la tarea
     private boolean isCompleted; //Estado de la tarea (true: hecha, false: sin hacer)
 
     //Constructor de EventTask, las tareas nuevas, siempre se marcan como no completadas

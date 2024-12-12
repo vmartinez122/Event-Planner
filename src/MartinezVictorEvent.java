@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class MartinezVictorEvent {
     private String title; //Título del evento
     private LocalDate date;//Fecha del evento (LocalDate de java.time)
-    private MartinezVictorPriority priority; //priority: enum que define la prioridad del evento. Acotado a los siguientes valores (HIGH, MEDIUM, LOW)
-    private ArrayList<MartinezVictorEventTask> task;
+    private MartinezVictorPriority priority; //Enum que define la prioridad del evento. Acotado a los siguientes valores (HIGH, MEDIUM, LOW)
+    private ArrayList<MartinezVictorEventTask> task; //Array almacenando las tareas de cada evento
 
     //Constructor sin task
     public MartinezVictorEvent(String title, LocalDate date, MartinezVictorPriority priority) {
