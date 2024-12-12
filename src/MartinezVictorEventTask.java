@@ -16,6 +16,10 @@ public class MartinezVictorEventTask {
     public String getText() {
         return text;
     }
+    //Getter del valor booleano de la compleción de la tarea
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
     //Método para marcar la tarea como completada (Setter)
     public void setCompleted(boolean set){
@@ -35,6 +39,6 @@ public class MartinezVictorEventTask {
             sym = ANSI_RED+"✘";
         }
 
-        return "- "+ text +" "+ sym +ANSI_RESET;
+        return text +" "+ sym +ANSI_RESET;
     }
 }

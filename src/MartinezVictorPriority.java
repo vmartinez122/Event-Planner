@@ -1,11 +1,11 @@
-public enum Priority {
+public enum MartinezVictorPriority {
     HIGH("High"),
     MEDIUM("Medium"),
     LOW("Low");
     private String priority;
 
     //TODO explicar constructor
-    Priority(String priority){
+    MartinezVictorPriority(String priority){
         this.priority = priority;
     }
 

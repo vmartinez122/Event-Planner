@@ -23,8 +23,8 @@ public class MartinezVictorMain {
      * El menú se sequirá mostrando hasta que se seleccione la opción 5 (Salir)
      */
     private void menu(){
-        events.add(new MartinezVictorEvent("Entrega proyecto", LocalDate.of(2024,12,13),Priority.HIGH)); //EVENTO PROVISIONAL
-        events.add(new MartinezVictorEvent("Navidad", LocalDate.of(2024,12,25),Priority.LOW)); //EVENTO PROVISIONAL
+        events.add(new MartinezVictorEvent("Entrega proyecto", LocalDate.of(2024,12,13), MartinezVictorPriority.HIGH)); //EVENTO PROVISIONAL
+        events.add(new MartinezVictorEvent("Navidad", LocalDate.of(2024,12,25), MartinezVictorPriority.LOW)); //EVENTO PROVISIONAL
 
         boolean exit = false; //Variable que cierra el menú
         do {
@@ -49,6 +49,7 @@ public class MartinezVictorMain {
                     break;
                 case 4: //Marcar o desmarcar tareas
                     System.out.println(ANSI_YELLOW+"Marcar tareas:"+ANSI_RESET);
+                    markTask();
                         //TODO marcar tareas
                     break;
                 case 5: //Salir del programa
@@ -69,7 +70,7 @@ public class MartinezVictorMain {
     private void addEvent(){
         String title;
         LocalDate date;
-        Priority priority;
+        MartinezVictorPriority priority;
         ArrayList<MartinezVictorEventTask> task;
 
         System.out.println("Título del evento:");
@@ -123,15 +124,15 @@ public class MartinezVictorMain {
      * Da a escojer entre el 1 y el 3 para escojer el nivel de prioridad
      * @return nivel de Priority
      */
-    private Priority setPriority(){
+    private MartinezVictorPriority setPriority(){
         do {
             switch (intFromConsole(1,3)){
                 case 1:
-                    return Priority.LOW;
+                    return MartinezVictorPriority.LOW;
                 case 2:
-                    return Priority.MEDIUM;
+                    return MartinezVictorPriority.MEDIUM;
                 case 3:
-                    return Priority.HIGH;
+                    return MartinezVictorPriority.HIGH;
                 default:
                 break;
             }
@@ -162,26 +163,76 @@ public class MartinezVictorMain {
         }while (true);
     }
 
+    /**
+     * Pide al usuario el título de un evento. Si el evento existe, lo elimina del array y lo notifica por pantalla
+     */
     private void deleteEvent(){
-        int i = 0;
-        String del;
+        int del; //Posición evento a borrar
         System.out.println("Título del evento a borrar:");
-        del = input.nextLine();
+        del = findEvent(input.nextLine()); //Utilizamos el método find event para encontrar la posición del evento
+        // introducido por el usuario
+        //El usuario también puede introducir valores en blanco en caso de no querer borrar nada
+        if(del!=-1){
+            System.out.println("Eliminado evento: " +events.get(del).getTitle());
+            events.remove(del);
+        } else {
+            System.out.println("No se ha eliminado ningún evento. Volviendo al menú.");
+        }
+    }
+
+    //Bucle foreach que imprime todos los eventos por pantalla, utilizando su método toString()
+    private void listEvent(){
         for (MartinezVictorEvent event : events){
-            if (event.getTitle().equals(del)){ //Usamos equals en vez de == EXPLICAR!!!
-                System.out.println("Eliminado evento: " +events.get(i).getTitle()); //events.size()-1
-                events.remove(i);
-                return;
+            System.out.println(event); //El método toString, puede ser llamado directamente imprimiendo el "objeto"
+        }
+    }
+
+    private void markTask(){
+        int edit; //Posición evento a editar
+        MartinezVictorEvent toEdit; //Evento a editar
+        String findTask; //Nombre tarea a buscar
+
+        System.out.println("Título del evento a editar:");
+        edit = findEvent(input.nextLine()); //Utilizamos el método find event para encontrar la posición del evento
+        if(edit!=-1){
+            toEdit=events.get(edit); //Obtenemos el evento a editar
+            if (!(toEdit.getTask()==null)){ //Si el evento no tiene tareas y intentamos mostrarlas, ocurrirá un NullPointerException
+                System.out.println("Evento a marcar/desmarcar:\n"+toEdit.showTasks()); //El método showTasks(), muestra los toString() de
+                // cada tarea en el array tasks. Tambíen podriamos utilizar el getter de task, y llamar a task.toString, pero
+                // de esta manera, tenemos el mismo formato que utilizo en listEvent()
+                findTask = input.nextLine();
+                //Utilizamos el mismo bucle que findEvent() para buscar el evento, con un tipo de dato distinto, así que no puedo
+                // reutilizar la función
+                for (MartinezVictorEventTask task : toEdit.getTask()) { //Recorremos el array para encontrar un título igual al introducido por el usuario
+                    if (task.getText().equals(findTask)) {
+                        task.setCompleted(!task.isCompleted()); //Obtiene el valor booleano de isCompleted y lo revierte con su setter
+                        System.out.println("Editado "+toEdit.getTitle()+": "+task);
+                        return; //En este caso, return actúa como un break, pero saliendo de la función, no solo el bucle for
+                    }
+                }
+            }else{
+                System.out.println(ANSI_RED+"El evento "+toEdit.getTitle()+" no tiene tareas."+ANSI_RESET);
+            }
+        }
+    }
+
+    /**
+     * Busca el título de un evento iterando sobre el ArrayList de eventos
+     * @param find Título del evento a buscar
+     * @return posición del evento a buscar, si no se encuentra, devuelve -1
+     */
+    private int findEvent(String find){
+        int i=0; //El iterador no se declara junto con el bucle ya que utilizo un foreach
+        for (MartinezVictorEvent event : events) { //Recorremos el array para encontrar un título igual al introducido por el usuario
+            if (event.getTitle().equals(find)) { //Comparamos el valor introducido por el usuario por el del título
+                //Al comprobar objetos como String, es recomendable utilizar la función "equals()" en vez de "==", ya
+                // que el segundo no funcionaría si fueran distintas instancias del objeto (String). Aunque tengan el mismo valor
+                return i;
             }
             ++i;
         }
         System.out.println(ANSI_RED+"El evento no existe. Introduce título exacto de un evento."+ANSI_RESET);
-    }
-
-    private void listEvent(){
-        for (MartinezVictorEvent event : events){
-            System.out.println(event);
-        }
+        return -1; //Evento no encontrado
     }
 
     /**
@@ -191,8 +242,9 @@ public class MartinezVictorMain {
      * @return Integer validada, devuelve -1 si el input és inválido
      */
     private int intFromConsole(int min, int max) {
+        int x;
         if (input.hasNextInt()) {
-            int x = input.nextInt();
+            x = input.nextInt();
             if (x >= min && x <= max) {
                 input.nextLine(); //Limpiar búfer
                 return x;
@@ -208,8 +260,9 @@ public class MartinezVictorMain {
      * @return String validado
      */
     private String stringFromConsole(){
+        String x;
         do {
-            String x = input.nextLine();
+            x = input.nextLine();
             if(!x.isBlank()){
                 return x;
             }
