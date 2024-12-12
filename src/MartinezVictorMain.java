@@ -55,7 +55,7 @@ public class MartinezVictorMain {
                     deleteEvent();
                     break;
                 case 3: //Listar evento
-
+                    listEvent();
                     break;
                 case 4: //Marcar desmarcar tareas
 
@@ -76,16 +76,52 @@ public class MartinezVictorMain {
         String title = stringFromConsole();
         System.out.println("Fecha (DD/MM/YYYY):");
         LocalDate date= esFechaValida();
-        System.out.println("Prioridad:");
-        Priority priority = Priority.MEDIUM; // TODO implementar prioridades
-        //TODO introducir tareas (o no)
-        events.add(new MartinezVictorEvent(title, date, priority));
+        System.out.println("Prioridad 1-Low 2-Medium 3-High:");
+        Priority priority = setPriority();
+        ArrayList<MartinezVictorEventTask> task = addTask();
+        if (task == null){
+            events.add(new MartinezVictorEvent(title, date, priority));
+        }else{
+            events.add(new MartinezVictorEvent(title, date, priority,task));
+        }
         System.out.println("Añadido evento: " +events.getLast().getTitle()); //events.size()-1
+    }
+
+    /**
+     *
+     * @return
+     */
+    private Priority setPriority(){
+        do {
+            switch (intFromConsole(1,3)){
+                case 1:
+                    return Priority.LOW;
+                case 2:
+                    return Priority.MEDIUM;
+                case 3:
+                    return Priority.HIGH;
+                default:
+                break;
+            }
+        }while (true);
+    }
+    private ArrayList<MartinezVictorEventTask> addTask(){
+        ArrayList<MartinezVictorEventTask> task = new ArrayList<>();
+        do {
+            System.out.println("Añadir tareas (Dejar en blanco para salir):");
+            MartinezVictorEventTask newTask = new MartinezVictorEventTask(input.nextLine());
+            if (!newTask.getText().isBlank()){
+                task.add(newTask);
+            }else {
+                return task;
+            }
+        }while (true);
     }
 
     private void deleteEvent(){
         int i = 0;
         for (MartinezVictorEvent event : events){
+            System.out.println("Título del evento a borrar:");
             if (event.getTitle() == stringFromConsole()){
                 System.out.println("Eliminado evento: " +events.get(i).getTitle()); //events.size()-1
                 events.remove(i);
@@ -93,7 +129,13 @@ public class MartinezVictorMain {
             }
             ++i;
         }
-        System.out.println(ANSI_RED+"Error. Introduce título exacto de un evento."+ANSI_RESET);
+        System.out.println(ANSI_RED+"El evento no existe. Introduce título exacto de un evento."+ANSI_RESET);
+    }
+
+    private void listEvent(){
+        for (MartinezVictorEvent event : events){
+            System.out.println(event);
+        }
     }
 
     /**
@@ -111,7 +153,7 @@ public class MartinezVictorMain {
             }
         }
         input.nextLine(); //Limpiar búfer
-        System.out.println(ANSI_RED+"Opción inválida. Introduce un número [" + min + " - " + max + "]"+ANSI_RESET);
+        System.out.println(ANSI_RED+"Valor inválido. Introduce un número [" + min + " - " + max + "]"+ANSI_RESET);
         return -1; //Si el número es inválido, el método devuelve -1, para que se vuelva a mostrar el menú
     }
 
@@ -130,7 +172,7 @@ public class MartinezVictorMain {
      * @return
      */
     public LocalDate esFechaValida() {
-        String errMsg = "Error. Formato de fecha inválido (DD/MM/YYYY)";
+        String errMsg = "Error. Formato de fecha inválido (DD/MM/YYYY)"; //
         do {
             String fecha = stringFromConsole();
             String[] parts = fecha.split("/");

@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MartinezVictorEvent {
@@ -25,12 +26,22 @@ public class MartinezVictorEvent {
     // tareas con cantidad de tareas completadas vs tareas totales.
     @Override
     public String toString() {
-        return "MartinezVictorEvent{" +
-                "title='" + title + '\'' +
-                ", date=" + date +
-                ", priority=" + priority +
-                ", task=" + task +
-                '}';
+        String dateFormat = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); //Modifica el formato de la fecha
+        // utilizando un patrón de la clase DateTimeFormatter, de esta manera, la fecha se muestra en el formato que ha introducido el usuario
+        if (task!=null){
+            return title+" ["+dateFormat+"] "+"Prioridad: " + priority+'\n'+
+                    "Tareas:"+'\n'+showTasks();
+        }else {
+
+            return title+" ["+dateFormat+"] "+"Prioridad: " + priority;
+        }
+    }
+    private String showTasks(){
+        String taskList = "";
+        for (MartinezVictorEventTask t : task){
+            taskList = taskList.concat(t+"\n");
+        }
+        return taskList;
     }
 
     public String getTitle() {
