@@ -22,30 +22,37 @@ public class MartinezVictorEvent {
         this.task = task;
     }
 
-    //Método toString para mostrar los detalles básicos del evento (title, date, priority) pero también info de estado de las
-    // tareas con cantidad de tareas completadas vs tareas totales.
+    //Getter titulo del evento
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Método toString para mostrar los detalles básicos del evento (title, date, priority) pero también info de estado de las
+     *  tareas con cantidad de tareas completadas vs tareas totales.
+     */
+    //TODO  Info de estado de las tareas con cantidad de tareas completadas vs tareas totales.
     @Override
     public String toString() {
         String dateFormat = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); //Modifica el formato de la fecha
         // utilizando un patrón de la clase DateTimeFormatter, de esta manera, la fecha se muestra en el formato que ha introducido el usuario
         if (task!=null){
-            return title+" ["+dateFormat+"] "+"Prioridad: " + priority+'\n'+
-                    "Tareas:"+'\n'+showTasks();
+            return "["+dateFormat+"] "+title+" | Prioridad: " + priority.getPriority()+'\n'+
+                    "\tTareas:"+'\n'+showTasks();
         }else {
-
-            return title+" ["+dateFormat+"] "+"Prioridad: " + priority;
+            return "["+dateFormat+"] "+title+" | Prioridad: " + priority.getPriority();
         }
     }
+    //Constructor helper que permite mostrar las tareas en una lista
     private String showTasks(){
         String taskList = "";
-        for (MartinezVictorEventTask t : task){
-            taskList = taskList.concat(t+"\n");
+        for (int t=0; t < task.size();++t){
+            if (t != task.size()-1){
+                taskList = taskList.concat("\t"+t+"\n"); //Concatena una tabulación y salto de línea
+            }else {
+                taskList = taskList.concat("\t"+t); //Concatena una tabulación sin salto de línea para el último elemento
+            }
         }
         return taskList;
     }
-
-    public String getTitle() {
-        return title;
-    }
 }
-

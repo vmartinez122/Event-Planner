@@ -1,10 +1,10 @@
 public enum Priority {
-    HIGH("high"),
-    MEDIUM("medium"),
-    LOW("low");
+    HIGH("High"),
+    MEDIUM("Medium"),
+    LOW("Low");
     private String priority;
 
-    //Constructor implícitamente privado
+    //TODO explicar constructor
     Priority(String priority){
         this.priority = priority;
     }
