@@ -13,7 +13,6 @@ public class MartinezVictorMain {
 
     public static void main(String[] args) { //Utilizamos el método main únicamente para llamar al método que muestra el menú
         MartinezVictorMain programa = new MartinezVictorMain();
-
         programa.menu();
     }
 
@@ -23,9 +22,6 @@ public class MartinezVictorMain {
      * El menú se sequirá mostrando hasta que se seleccione la opción 5 (Salir)
      */
     private void menu(){
-        events.add(new MartinezVictorEvent("Entrega proyecto", LocalDate.of(2024,12,13), MartinezVictorPriority.HIGH)); //EVENTO PROVISIONAL
-        events.add(new MartinezVictorEvent("Navidad", LocalDate.of(2024,12,25), MartinezVictorPriority.LOW)); //EVENTO PROVISIONAL
-
         boolean exit = false; //Variable que cierra el menú
         do {
             System.out.println(ANSI_YELLOW+"Bienvenido a Event Planner. Seleccione una opción:\n"+ANSI_RESET+"""

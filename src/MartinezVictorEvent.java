@@ -32,10 +32,9 @@ public class MartinezVictorEvent {
     }
 
     /**
-     * Método toString para mostrar los detalles básicos del evento (title, date, priority) pero también info de estado de las
-     *  tareas con cantidad de tareas completadas vs tareas totales.
+     * Método toString para mostrar los datos del evento en formato [date] title | Priority
+     * Incluye un listado de las tareas dentro del evento y un contador de tareas completadas
      */
-    //TODO  Info de estado de las tareas con cantidad de tareas completadas vs tareas totales.
     @Override
     public String toString() {
         String dateFormat = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); //Modifica el formato de la fecha
